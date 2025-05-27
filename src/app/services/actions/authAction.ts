@@ -24,7 +24,7 @@ async function login(data: User) {
             const data = await response.json()
             // save token in cookies
             cookies().set('token', data.token, {
-                maxAge: 24 * 60 * 60,
+                maxAge: 60 * 60 * 24,
             })
 
             return { success: true, data } 
@@ -39,4 +39,28 @@ async function login(data: User) {
 
 }
 
-export { login }
+// Logout function
+async function logout() {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_API}/Authenticate/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        if (response.ok) {
+            cookies().set('token', '', {
+                maxAge: 0,
+            })
+
+            return { success: true }
+        } else {
+            return { success: false }
+        }
+    } catch (error) {
+        console.error('An error occured during the logout process')
+        return { success: false, error }
+    }
+}
+ 
+export { login, logout }

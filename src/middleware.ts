@@ -7,20 +7,23 @@ export async function middleware(request: NextRequest) {
                                  request.nextUrl.pathname === '/forgotpass' ||
                                  request.nextUrl.pathname === '/reset-password' ||
                                  request.nextUrl.pathname === '/maintenance' ||
-                                 request.nextUrl.pathname === '/coming-soon' 
+                                 request.nextUrl.pathname === '/coming-soon' ||
+                                 request.nextUrl.pathname === '/twostep'
             
-            // const token = request.cookies.get('token')?.value
-            const token = false
+            const token = request.cookies.get('token')?.value
+            // const token = false
 
             console.log(token, isPublicPage)
 
             if (token && isPublicPage){
-                return NextResponse.redirect(new URL('/dashboard', request.nextUrl))
+                return NextResponse.redirect(new URL('backend/dashboard', request.nextUrl))
             }
 
             if (!token && !isPublicPage){
                 return NextResponse.redirect(new URL('/login', request.nextUrl))
             }
+
+            return NextResponse.next()
     }
     catch(error) {
         console.error("Error: ", error)
@@ -36,6 +39,7 @@ export const config = {
         "/reset-password",
         "/maintenance",
         "/coming-soon",
-        //"/backend/:path*"
+        "/twostep",
+        "/backend/:path*"
     ]
 }

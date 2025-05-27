@@ -5,7 +5,6 @@ import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import { IconPower } from '@tabler/icons-react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 import { logout } from '@/app/services/actions/authAction'
@@ -19,7 +18,7 @@ export const Profile = () => {
   async function handleLogout() {
     const response = await logout()
     if (response.success) {
-      console.log(response)
+      // console.log(response)
       router.push("/login")
     } else {
       console.log(response.error)
@@ -45,10 +44,9 @@ export const Profile = () => {
             <Tooltip title="Logout" placement="top">
               <IconButton
                 color="error"
-                component={Link}
-                href="/login"
                 aria-label="logout"
                 size="small"
+                onClick={handleLogout}
               >
                 <IconPower size="20" />
               </IconButton>
