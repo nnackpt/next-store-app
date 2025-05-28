@@ -91,7 +91,7 @@ import {
       title: "External Link",
       external: true,
       icon: IconStar,
-      href: "https://google.com",
+      href: "https://github.com/nnackpt",
     },
   ];
   
