@@ -30,6 +30,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 
 // Import authAction
 import { login } from '@/app/services/actions/authAction'
+import { useState } from 'react'
 
 // Types or Interfaces
 type User = {
@@ -64,16 +65,21 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
     resolver: yupResolver(formValidateSchema),
   })
 
+  // Login status
+  const [loginStatus, setLoginStatus] = useState("")
+
   // Handle Submit Login
   const onSubmitLogin = async (data: User) => {
     // Call Login Function
     const response = await login(data)
-    console.log(response)
+    //console.log(response)
 
     if(response.success) {
       // console.log("Login Success", response.data)
+      setLoginStatus("success")
       router.push("/backend/dashboard")
     } else {
+      setLoginStatus("error")
       console.log("Login Failed", response.error)
     }
   }
@@ -103,6 +109,16 @@ export default function AuthLogin({ title, subtitle, subtext }: loginType) {
           </Typography>
         </Divider>
       </Box>
+
+      {/* Login Status */}
+      { loginStatus && (
+        <Alert severity={loginStatus == 'success' ? 'success' : 'error'} sx={{ mt: 2 }}>
+          <Typography>
+            {loginStatus == 'success' ? 'Login Successful!' : 'Login Failed! Please check your credentials.'}
+          </Typography>
+        </Alert>
+      )}
+
       <form 
         onSubmit={handleSubmit(onSubmitLogin)}
         noValidate
